@@ -1,0 +1,1 @@
+let mystr = 'Hello World!';
