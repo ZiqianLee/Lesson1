@@ -31,9 +31,10 @@ console.log(Number(null) + 1)
 // 计算两个 null 值转换为数字后的和：null 转换为数字是 0，所以 0 + 0 = 0
 console.log(Number(null) + Number(null));
 
+NaN + 1 // NaN - NaN 与任何数相加都是 NaN
+console.log(NaN + 'Hi') // NaN + 'Hi' 返回 'NaNHi'
 
-
-
+Math.exp(2)
 
 
 
