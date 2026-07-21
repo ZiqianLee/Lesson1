@@ -22,7 +22,7 @@ for (var i = 0; i < 3; i++) {
    * 将当前循环的索引值作为参数传递给函数，确保每个setTimeout都能访问到正确的值
    * @param {number} index - 当前循环的索引值（0, 1, 2）
    */
-  (function(index) {
+  (function(index) { 
     setTimeout(() => {
       // 输出当前迭代的索引值，由于IIFE捕获了index值，所以能正确输出0, 1, 2
       console.log(index);
