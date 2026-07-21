@@ -1,11 +1,16 @@
-function hypotenuse(a, b) {
-  function square(x) {
-    return x * x;
-  }
-  return Math.sqrt(square(a) + square(b));
-}
-hypotenuse(3, 4);
+/**
+ * 演示 JavaScript 中 for...in 和 for...of 循环的区别
+ * for...in 遍历的是数组索引，for...of 遍历的是数组元素值
+ */
+let data = [1, 2, 3, 4, 5, 6, 7, 8, 9],
+  sum = 0;
 
-// console.log(a); // ReferenceError: a is not defined
-// a = 10;
-// console.log(a); // 输出 10，a被提升为全局变量
+// 使用 for...in 遍历数组（遍历的是索引）
+for (let element in data) {
+  console.log(element);
+}
+
+// 使用 for...of 遍历数组（遍历的是元素值）
+for (let element of data) {
+  console.log(element);
+}
