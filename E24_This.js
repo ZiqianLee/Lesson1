@@ -1,18 +1,30 @@
-function logThis() {
-    console.log(this ); // 在浏览器中，this指向全局对象window，输出true
+/**
+ * 在控制台打印当前函数执行上下文中的 'this' 对象。
+ * 在非严格模式下，全局环境中的普通函数调用会将 'this' 绑定到全局对象（浏览器中是 window）。
+ * 在严格模式下 ('use strict')，'this' 的值将是 undefined。
+ */
+function logThisFn() {
+  console.log(this);
 }
 
-logThis(); // 在全局作用域中调用，this指向全局对象（在浏览器中是window，在Node.js中是global）
+logThisFn(); // window object (浏览器中) GLOBAL object (Node.js 中)  undefined (严格模式下)
 
-// 定义一个对象obj，包含一个name属性
-const obj = {name:'obj1'}
-// 为obj对象添加print方法，赋值为logThis函数
-obj.print = logThis;
+const obj = { name: "obj1" };
+const obj2 = { name: "obj2" };
 
-// 定义另一个对象obj2，包含一个name属性
-const obj2 = {name:'obj2'}
-// 为obj2对象添加print方法，赋值为logThis函数
-obj2.print = logThis;
+obj.print = logThisFn;
+obj2.print = logThisFn;
 
-obj.print(); // 在对象作用域中调用，this指向对象obj1
-obj2.print(); // 在对象作用域中调用，this指向对象obj2
+// 当作为对象方法调用时，'this' 绑定到该对象
+obj.print();
+obj2.print();
+
+/**
+ * 在控制台打印当前函数执行上下文中的 'this.name' 属性。
+ * 'this' 的绑定取决于函数的调用方式：
+ * - 当作为对象方法调用时，'this' 绑定到该对象
+ * - 当作为普通函数调用时，'this' 绑定到全局对象（非严格模式）或 undefined（严格模式）
+ */
+function logThisNameFn() {
+  console.log(this.name);
+}
