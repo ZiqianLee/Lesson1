@@ -3,44 +3,102 @@
  * ES6 引入的 class 语法是基于原型的面向对象模式的语法糖。
  */
 class P {
-  // 私有属性（Private Field）：以 # 开头，只能在类的内部被访问和修改，外部无法直接访问
+  // 私有属性（Private Field）：以 # 开头，只能在类的内部访问，外部无法直接访问
   #address = "street";
+  #a;
+  #b;
+  #c;
 
   /**
    * 构造函数：用于在创建对象实例（new P(...)）时初始化对象的属性
-   * @param {*} a 
-   * @param {*} b 
-   * @param {*} c 
+   * @param {*} a
+   * @param {*} b
+   * @param {*} c
    */
   constructor(a, b, c) {
-    // 公共属性：通过 this 绑定到新创建的实例对象上
-    this.a = a;
-    this.b = b;
-    this.c = c;
+    // 实例的私有属性 #a、#b、#c 在构造函数中被赋值为传入的参数 a、b、c
+    // 这是为新创建的实例对象设置初始状态的标准做法。
+    this.#a = a;
+    this.#b = b;
+    this.#c = c;
   }
 
-  // 实例方法：定义在 P.prototype 原型对象上，所有实例共享该方法
+  /**
+   * 实例方法：
+   * - 在类内部可以直接通过 this.#address 访问私有字段
+   * - 访问 this.#address, this.a / this.b / this.c 时，会自动触发下方的 getter 访问器，从而读取到私有属性 #a / #b / #c 的值
+   */
   thisA() {
-    console.log(this.a);
+    console.log(this.address + " " + this.a); // 输出: "street 1"（this.a 触发了 get a()）
   }
 
   thisB() {
-    console.log(this.b);
+    console.log(this.address + " " + this.b); // 输出: "street 2"（this.b 触发了 get b()）
   }
 
   thisC() {
-    console.log(this.c);
+    console.log(this.address + " " + this.c); // 输出: "street 3"（this.c 触发了 get c()）
+  }
+
+  // ==================== Getter & Setter 访问器方法 ====================
+
+  // #address 的访问器
+  get address() {
+    return this.#address;
+  }
+  set address(val) {
+    this.#address = val;
+  }
+
+  // #a 的访问器
+  get a() {
+    return this.#a;
+  }
+  set a(val) {
+    this.#a = val;
+  }
+
+  // #b 的访问器
+  get b() {
+    return this.#b;
+  }
+  set b(val) {
+    this.#b = val;
+  }
+
+  // #c 的访问器
+  get c() {
+    return this.#c;
+  }
+  set c(val) {
+    this.#c = val;
   }
 }
 
-// 实例化：使用 new 操作符调用构造函数，创建 P 的新实例 p1
+// ==================== 测试与使用 ====================
+
+// 1. 实例化对象
 const p1 = new P(1, 2, 3);
 
-// 打印实例对象：输出包含公共属性 { a: 1, b: 2, c: 3 }
-console.log(p1);
+// 2. 打印实例对象结构（私有属性在外部不可直接枚举）
+console.log("直接打印具有私有属性的 p1 实例对象:", p1);
 
-// 尝试在类外部访问私有属性：
-// ❌ 会直接抛出语法错误（SyntaxError: Private field '#address' must be declared in an enclosing class）
-// 私有属性受到语言级别的保护，不能在类外部通过实例直接读取或修改
-// p1.#address;
+console.log("--------------------------------------------------");
 
+// 3. 调用实例方法（内部 this.a 等会触发 getter 读取私有属性）
+p1.thisA(); // 输出: street 1
+p1.thisB(); // 输出: street 2
+p1.thisC(); // 输出: street 3
+
+console.log("--------------------------------------------------");
+
+// 4. 通过 Getter / Setter 读取和修改属性
+console.log("读取 a:", p1.a); // 输出: 1
+console.log("读取 address:", p1.address); // 输出: street
+
+// 通过 setter 修改属性
+p1.a = 100;
+p1.address = "Broadway";
+
+console.log("修改后读取 a:", p1.a); // 输出: 100
+console.log("修改后读取 address:", p1.address); // 输出: Broadway
