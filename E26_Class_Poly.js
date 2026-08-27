@@ -41,19 +41,21 @@ const list = [P1, D1, D2];
  * 思想：调用者传入任意对象，函数内部通过 instanceof 区分类型并执行对应逻辑。
  * （多态的核心思想：同一函数/操作，作用于不同的对象类型时呈现不同的行为）
  */
-function print(obj) {
+function printObjects(obj) {
   console.log("obj:", obj.name); // 获取对象名称
 
   if (obj instanceof Person) {
     console.log(obj.name + " is a person");
   } else if (obj instanceof Dog) {
     console.log(obj.name + " is a dog");
+  } else {
+    console.log(obj.name + " is an unknown type");
   }
 }
 
 // 遍历列表：list 里的元素类型不同（Person / Dog），但都可以传给 print 执行
-console.log("========= list.forEach(print) =========");
-list.forEach(print);
+console.log("========= list.forEach(printObjects) =========");
+list.forEach(printObjects);
 
 // ==============================
 // 4. 多态的应用示例 2：多参数打印
