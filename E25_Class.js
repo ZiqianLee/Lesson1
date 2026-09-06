@@ -23,11 +23,11 @@ class P {
     this.#c = c;
   }
 
-  /**
-   * 实例方法：
-   * - 在类内部可以直接通过 this.#address 访问私有字段
-   * - 访问 this.#address, this.a / this.b / this.c 时，会自动触发下方的 getter 访问器，从而读取到私有属性 #a / #b / #c 的值
-   */
+  // this.address 会触发 #address 的 getter
+  // this.a 会触发 #a 的 getter
+  // this.b 会触发 #b 的 getter
+  // this.c 会触发 #c 的 getter
+  // 总结: this.xx 在类方法中访问的是 实例的 属性（有 getter 的除外，会触发 getter）
   thisA() {
     console.log(this.address + " " + this.a); // 输出: "street 1"（this.a 触发了 get a()）
   }
