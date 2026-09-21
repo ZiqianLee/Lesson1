@@ -7,4 +7,4 @@ for (let i = 0; i < arr.length; i++) {
     i--;
   }
 }
-console.log(arr);
+console.log(b);
