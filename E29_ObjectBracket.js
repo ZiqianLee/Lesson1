@@ -17,8 +17,10 @@ console.log(player["balance"]); // 500
 
 // 2. 使用变量动态访问属性
 // 中括号内放变量时不加引号，变量的值会作为属性名。
+// 下面的 propertyName 变量的值是 "balance"，所以 player[propertyName] 等价于 player["balance"]。
 const propertyName = "balance";
 console.log(player[propertyName]); // 500
+console.log(player.propertyName); // undefined，因为 player 对象没有名为 propertyName 的属性。
 
 // 如果写成 player["propertyName"]，查找的是名字为 propertyName 的属性，
 // 而不是 propertyName 变量值对应的属性。
