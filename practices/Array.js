@@ -1,43 +1,33 @@
 let arrTest = [1, 2, , undefined, 3];
+console.log("--------original arrTest--------");
+console.log(arrTest);
 
-console.log("-------forEach----------");
-/* function _forEach(arr, func) {
-  for (let i = 0; i < arr.length; i++) {
-    if (i in arr) {
-      //to deal with sparse arrays, but not undefined elements
-      func(arr[i]); //the 3 parameter positions are fixed. im just putting arr[i] here.
-    }
-  }
-}
-_forEach(arrTest, (x) => console.log(x)); */
+console.log("--------forEach----------");
 
-Array.prototype._forEach2 = function (anyFunction) {
+Array.prototype._forEach = function (func) {
   for (let i = 0; i < this.length; i++) {
+    //to filter out empty items in sparse arrays, but not undefined elements
     if (i in this) {
-      anyFunction(this[i], i, this);
+      func(this[i], i, this);
     }
   }
 };
 
-arrTest._forEach2((v, i, a) => (a[i] = v + 1));
-arrTest._forEach2((v, i, a) => (a[i] = v + 1));
+arrTest._forEach((v, i, a) => (a[i] = v + 1));
+arrTest._forEach((v, i, a) => (a[i] = v + 1));
 console.log(arrTest);
 
 console.log("--------map---------");
-/* function _map(arr, func) {
-  const newArr = [];
-  _forEach(arr, function (element) {
-    newArr.push(func(element)); //I think we only need element here
-  });
-  return newArr; //the map method has a return value
-} */
 
-Array.prototype._map2 = function (anyFunction) {
+Array.prototype._map = function (func) {
   const newArr = [];
   for (let i = 0; i < this.length; i++) {
     if (i in this) {
-      newArr.push(anyFunction(this[i], i, this));
-    } else {
+      newArr.push(func(this[i], i, this));
+    }
+    //the book mentioned that we can use delete to create sparse arrays, but not saying how.
+    //im just simply assigning anything to this index and then delete it. It works.
+    else {
       newArr[i] = undefined;
       delete newArr[i];
     }
@@ -45,17 +35,128 @@ Array.prototype._map2 = function (anyFunction) {
   return newArr;
 };
 
-console.log(arrTest._map2((v) => v + 10));
+console.log(arrTest._map((v) => v + 10));
 
-/* console.log("--------filter---------");
-function _filter(arr, func) {
+console.log("---------filter----------");
+
+Array.prototype._filter = function (func) {
   const newArr = [];
-  _forEach(arr, function (elem, i) {
-    if (func(elem, i)) {
-      //see the example from the book, we need both element and index
-      newArr.push(elem);
+  this._forEach((v, i) => {
+    //no need to worry about keeping the sparse elements
+    if (func(v, i)) {
+      newArr.push(v);
     }
   });
   return newArr;
-}
-console.log(_filter(arrTest, (x) => x > 2)); */
+};
+
+console.log(arrTest._filter((v) => v > 3));
+
+console.log("---------find----------");
+const arrFind = [1, 2, 3, 4];
+Array.prototype._find = function (func) {
+  // can't use the forEach method here coz we only need the 1st match.
+  for (let i = 0; i < this.length; i++) {
+    if (func(this[i], i, this)) {
+      return this[i];
+    }
+  }
+};
+
+console.log(arrFind._find((v) => v > 11));
+
+console.log("---------findIndex---------");
+const arrFindIndex = [2, 3, 3, 3, 5];
+
+Array.prototype._findIndex = function (func) {
+  for (let i = 0; i < this.length; i++) {
+    if (func(this[i], i, this)) {
+      return i;
+    }
+  }
+};
+
+console.log(arrFindIndex._findIndex((v) => v === 3));
+
+console.log("----------every----------");
+
+const arrEvery = [1, 2, 3, 4, 5];
+
+Array.prototype._every = function (func) {
+  let bool = true;
+  this._forEach((v) => {
+    if (!func(v)) {
+      bool = false;
+    }
+  });
+  return bool;
+};
+
+console.log(arrEvery._every((v) => v > 2));
+
+console.log("---------some----------");
+
+Array.prototype._some = function (func) {
+  let boolSome = false;
+  this._forEach((v) => {
+    if (func(v)) {
+      boolSome = true;
+    }
+  });
+  return boolSome;
+};
+
+console.log(arrEvery._some((v) => v > 2));
+
+console.log("---------reduce---------");
+
+const arrReduce = [2, 3, 4];
+
+Array.prototype._reduce = function (func, initialValue) {
+  let initVal = initialValue;
+  let newIndex = 0;
+  if (initialValue === undefined) {
+    //since the 2nd argument is optional
+    for (let i = 0; i < this.length; i++) {
+      if (i in this) {
+        initVal = this[i];
+        newIndex = i;
+        break;
+      }
+    }
+  }
+  for (let i = newIndex + 1; i < this.length; i++) {
+    if (i in this) {
+      initVal = func(initVal, this[i]);
+    }
+  }
+  return initVal;
+};
+
+console.log(arrReduce._reduce((initVal, v) => initVal * v));
+
+console.log("---------reduceRight----------");
+
+const arrReduceRight = [3, 4, 5];
+
+Array.prototype._reduceRight = function (func, initialValue) {
+  let initVal = initialValue;
+  let newIndex = this.length - 1;
+  if (initialValue === undefined) {
+    for (let i = this.length - 1; i >= 0; i--) {
+      if (i in this) {
+        initVal = this[i];
+        newIndex = i;
+        break;
+      }
+    }
+  }
+  for (let i = newIndex - 1; i >= 0; i--) {
+    if (i in this) {
+      initVal = func(initVal, this[i]);
+    }
+  }
+  return initVal;
+};
+
+console.log(arrReduceRight._reduceRight((initVal, v) => initVal * v));
