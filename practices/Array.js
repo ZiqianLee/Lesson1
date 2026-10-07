@@ -137,7 +137,7 @@ console.log(arrReduce._reduce((initVal, v) => initVal * v));
 
 console.log("---------reduceRight----------");
 
-const arrReduceRight = [3, 4, 5];
+const arrReduceRight = [,3,, 4, 5];
 
 Array.prototype._reduceRight = function (func, initialValue) {
   let initVal = initialValue;
@@ -160,3 +160,85 @@ Array.prototype._reduceRight = function (func, initialValue) {
 };
 
 console.log(arrReduceRight._reduceRight((initVal, v) => initVal * v));
+
+console.log("----------flat----------");
+
+const arrFlat = [1, 2, [3, 4, [5, [6, 7]], 8, 9]];
+
+Array.prototype._flat = function (val) {
+  if (val === undefined || val <= 0) {
+    val = 1; //in case not specified or not positive, default to 1
+  }
+  let result = [];
+  for (let i = 0; i < this.length; i++) { 
+    if (Array.isArray(this[i]) && val > 0) {
+      result = result.concat(this[i]._flat(val - 1));
+    } else {
+      result.push(this[i]);
+    }
+  }
+  return result;
+};
+
+console.log(arrFlat._flat());
+
+console.log("---------indexOf---------");
+
+const arrIndexOf = [1, 2, 3, 4, 5];
+
+Array.prototype._indexOf = function (target) { 
+  for (let i = 0; i < this.length; i++) {
+    if (this[i] === target) {
+      return i;
+    }
+  }
+  return 'no such element'; //or delete this line and let it return undefined
+};
+
+console.log(arrIndexOf._indexOf(11));
+
+console.log("---------lastIndexOf---------"); 
+
+const arrLastIndexOf = [1, 2, 3, 4, 5];
+
+Array.prototype._lastIndexOf = function (target) {
+  for (let i = this.length - 1; i >= 0; i--) {
+    if (this[i] === target) {
+      return i;
+    }
+  }
+};
+
+console.log(arrLastIndexOf._lastIndexOf(11));
+
+console.log("---------includes---------");
+
+const arrIncludes = [1, 2,,3, 4, 5];
+
+Array.prototype._includes = function (target) {
+  for (let i = 0; i < this.length; i++) {
+    if (this[i] === target) {
+      return true;
+    }
+  }
+  return false;
+};
+
+console.log(arrIncludes._includes()); //works for sparse arrays too
+
+console.log("--------reverse---------");
+
+const arrReverse = [1, 2, 3, 4, 5];
+
+Array.prototype._reverse = function () {
+  this._forEach((v, i, a) => {
+    if (i < a.length / 2) { //when we are halfway through the array, it should be all done
+      let temp = a[i];
+      a[i] = a[a.length - 1 - i];
+      a[a.length - 1 - i] = temp;
+    }
+  });
+  return this;
+};
+
+console.log(arrReverse._reverse());
