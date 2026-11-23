@@ -22,4 +22,4 @@ let counter2 = invokCounter();
 // 调用counter1函数，输出调用次数并递增计数
 counter1(); // 输出: Invok count is 1
 counter1(); // 输出: Invok count is 2
-counter1(); // 输出: Invok count is 3
+counter1(); // 输出: Invok count is 3  
