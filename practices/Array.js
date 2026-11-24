@@ -137,7 +137,7 @@ console.log(arrReduce._reduce((initVal, v) => initVal * v));
 
 console.log("---------reduceRight----------");
 
-const arrReduceRight = [,3,, 4, 5];
+const arrReduceRight = [, 3, , 4, 5];
 
 Array.prototype._reduceRight = function (func, initialValue) {
   let initVal = initialValue;
@@ -170,7 +170,7 @@ Array.prototype._flat = function (val) {
     val = 1; //in case not specified or not positive, default to 1
   }
   let result = [];
-  for (let i = 0; i < this.length; i++) { 
+  for (let i = 0; i < this.length; i++) {
     if (Array.isArray(this[i]) && val > 0) {
       result = result.concat(this[i]._flat(val - 1));
     } else {
@@ -186,18 +186,18 @@ console.log("---------indexOf---------");
 
 const arrIndexOf = [1, 2, 3, 4, 5];
 
-Array.prototype._indexOf = function (target) { 
+Array.prototype._indexOf = function (target) {
   for (let i = 0; i < this.length; i++) {
     if (this[i] === target) {
       return i;
     }
   }
-  return 'no such element'; //or delete this line and let it return undefined
+  return "no such element"; //or delete this line and let it return undefined
 };
 
 console.log(arrIndexOf._indexOf(11));
 
-console.log("---------lastIndexOf---------"); 
+console.log("---------lastIndexOf---------");
 
 const arrLastIndexOf = [1, 2, 3, 4, 5];
 
@@ -213,7 +213,7 @@ console.log(arrLastIndexOf._lastIndexOf(11));
 
 console.log("---------includes---------");
 
-const arrIncludes = [1, 2,,3, 4, 5];
+const arrIncludes = [1, 2, , 3, 4, 5];
 
 Array.prototype._includes = function (target) {
   for (let i = 0; i < this.length; i++) {
@@ -232,7 +232,8 @@ const arrReverse = [1, 2, 3, 4, 5];
 
 Array.prototype._reverse = function () {
   this._forEach((v, i, a) => {
-    if (i < a.length / 2) { //when we are halfway through the array, it should be all done
+    if (i < a.length / 2) {
+      //when we are halfway through the array, it should be all done
       let temp = a[i];
       a[i] = a[a.length - 1 - i];
       a[a.length - 1 - i] = temp;

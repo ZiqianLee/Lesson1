@@ -11,4 +11,3 @@ function solution(number) {
 }
 
 console.log(solution(4));
-
